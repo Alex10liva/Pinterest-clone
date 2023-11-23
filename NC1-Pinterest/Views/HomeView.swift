@@ -136,8 +136,10 @@ struct HomeView: View {
                 if items.isEmpty {
                     ContentUnavailableView(label: {
                         Label("No pins added", systemImage: "pin")
+                            .accessibilityHint("Start adding your pins by tapping on the '+' button")
                     }, description: {
                         Text("Start adding your pins by tapping on the '+' button")
+                            .accessibilityHidden(true)
                     })
                 }
             }
