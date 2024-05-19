@@ -19,6 +19,7 @@ struct CardDetailView: View {
     @State var openOptionsSheet: Bool = false
     @State private var fullScreenImg: Bool = false
     @State private var scale: CGFloat = 1.0
+    @State private var dragOffset: CGSize = .zero
     
     // MARK: - Body
     var body: some View {
@@ -44,11 +45,13 @@ struct CardDetailView: View {
                                 , alignment: .top
                             )
                             .onTapGesture {
+                                // If it has a link open in the website
                                 if itemReceived.link != ""{
                                     if let url = URL(string: formatURL(itemReceived.link)) {
                                         openURL(url)
                                     }
                                 } else {
+                                    // Open the image in full screen
                                     withAnimation(.easeOut) {
                                         fullScreenImg.toggle()
                                     }
@@ -59,12 +62,35 @@ struct CardDetailView: View {
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .edgesIgnoringSafeArea(.all)
+                                    .offset(y: dragOffset.height) // Apply vertical scrolling
                                     .gesture(
-                                        DragGesture().onEnded { _ in
-                                            withAnimation {
-                                                fullScreenImg = false
+                                        DragGesture()
+                                            .onChanged { value in
+                                                // Update dragOffset while the gesture is being performed
+                                                if value.translation.height > 0 {
+                                                    dragOffset = value.translation
+                                                }
                                             }
-                                        }
+                                            .onEnded { value in
+                                                // Calculate the fraction of the screen
+                                                let screenHeight = UIScreen.main.bounds.height
+                                                let dragFraction = value.translation.height / screenHeight
+                                                
+                                                // Defines the fraction required to close the view
+                                                let closeThreshold: CGFloat = 0.3 // For example, close when the user drags 30% down
+                                                
+                                                if dragFraction > closeThreshold {
+                                                    withAnimation {
+                                                        fullScreenImg = false
+                                                        dragOffset = .zero
+                                                    }
+                                                } else {
+                                                    // If it does not reach the threshold, returns the image to its original position
+                                                    withAnimation {
+                                                        dragOffset = .zero
+                                                    }
+                                                }
+                                            }
                                     )
                             }
                     }
@@ -117,15 +143,15 @@ struct CardDetailView: View {
                 
                 Divider()
                 
-                
                 HStack{
                     Button{
-                        
+                        // If it has a link open in the website
                         if itemReceived.link != "" {
                             if let url = URL(string: formatURL(itemReceived.link)) {
                                 openURL(url)
                             }
                         } else {
+                            // Open the image in full screen
                             withAnimation(.easeOut){
                                 fullScreenImg = true
                             }
@@ -134,6 +160,7 @@ struct CardDetailView: View {
                         ActionButton(textButton: itemReceived.link != "" ? "Visit" : "View", redColor: false)
                     }
                     
+                    // Button to save the button (just a placeholder, no action)
                     Button{
                     } label: {
                         ActionButton(textButton: "Save", redColor: true)

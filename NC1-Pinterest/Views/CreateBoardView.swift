@@ -100,11 +100,11 @@ struct CreateBoardView: View {
                             
                             HStack {
                                 Rectangle()
-                                    .foregroundColor(toggle == true ? .white : .colorToogleBG)
+                                    .foregroundColor(toggle == true ? .purple : .black)
                                     .frame(width: 45, height: 25, alignment: .center)
                                     .overlay(
                                         Circle()
-                                            .foregroundColor(.accentColorInverted)
+                                            .foregroundColor(.white)
                                             .padding(.all, 3)
                                             .offset(x: toggle == true ? 11 : -11, y: 0)
                                         

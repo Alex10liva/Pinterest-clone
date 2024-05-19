@@ -10,11 +10,12 @@ import SwiftData
 
 struct OptionsCard: View {
     
-    @State var deleteOptionsSheet: Bool = false
+    // MARK: - Properties
     var pinToDelete: Pin
-    
+    @State var deleteOptionsSheet: Bool = false
     @Binding var firstSheet: Bool
     
+    // MARK: - Body
     var body: some View {
         NavigationStack{
             ZStack(alignment: .top){
@@ -26,9 +27,8 @@ struct OptionsCard: View {
                     
                     HStack{
                         Button{
-                            deleteOptionsSheet.toggle()
+                            deleteOptionsSheet.toggle() // Toggle the delete options sheet
                         } label: {
-                            
                             Text("Delete pin")
                                 .font(.title2)
                                 .bold()
@@ -36,6 +36,7 @@ struct OptionsCard: View {
                             Spacer()
                         }
                         .sheet(isPresented: $deleteOptionsSheet){
+                            // Sheet to delete a pin
                             SheetDeleteView(passedDeleteOptionsSheet: $firstSheet, pinToDelete: pinToDelete)
                                 .presentationDetents([.fraction(0.3)])
                         }
@@ -51,16 +52,19 @@ struct OptionsCard: View {
     }
     
     struct SheetDeleteView: View {
+        // MARK: - Environment properties
         @Environment(\.dismiss) var dismiss
-        
         @Environment(\.modelContext) private var modelContext
+        
+        // MARK: - Swiftui queries
         @Query private var items: [Pin]
         @Query private var boards: [Board]
         
+        // MARK: - Properties
         @Binding var passedDeleteOptionsSheet: Bool
-        
         var pinToDelete: Pin
         
+        // MARK: - Body
         var body: some View {
             ZStack(alignment: .top){
                 Color.colorCardDetailBG
@@ -77,16 +81,16 @@ struct OptionsCard: View {
                     
                     HStack{
                         Button{
-                            dismiss()
+                            dismiss() // Dismiss the sheet
                         } label: {
                             ActionButton(textButton: "Cancel", redColor: false)
                         }
                         
                         Button{
+                            // Delete the pin and dismiss the sheet
                             deleteItem(pinToDelete: pinToDelete)
                             dismiss()
                             passedDeleteOptionsSheet = false
-                            print(passedDeleteOptionsSheet)
                         } label: {
                             ActionButton(textButton: "Delete", redColor: true)
                         }
@@ -97,6 +101,8 @@ struct OptionsCard: View {
             .ignoresSafeArea(.all)
         }
         
+        // MARK: - Functions
+        // Functon to delete a pin
         func deleteItem(pinToDelete: Pin) {
             // Delete the pin in the All list
             if let index = items.firstIndex(where: { $0.id == pinToDelete.id }) {

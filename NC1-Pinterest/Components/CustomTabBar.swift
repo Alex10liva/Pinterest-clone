@@ -104,9 +104,9 @@ struct CustomTabBar: View {
             
             // MARK: - Profile item
             Button{
-//                withAnimation(.linear){
-//                    selectedTab = .profile
-//                }
+                withAnimation(.linear){
+                    selectedTab = .profile
+                }
                 
             } label: {
                 GeometryReader { geo in

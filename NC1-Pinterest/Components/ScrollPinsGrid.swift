@@ -32,14 +32,14 @@ struct ScrollPinsGrid: View {
                 LazyVStack(spacing: 10){
                     // MARK: - Pin content
                     ForEach(column.columnContent) { pin in
-//                        if(pin.pinContent.link != "") {
-//                            Link(destination: URL(string: formatURL(pin.pinContent.link))!, label: {
-//                                CardView(receivedPin: pin.pinContent)
-//                            })
-//                            .accessibilityLabel("Link from Alejandro Oliva to \(pin.pinContent.link)")
-//                            .accessibilityHint("Double tap to open it.")
-//                            .accessibilityRemoveTraits(.isLink)
-//                        } else {
+                        if(pin.pinContent.link != "") {
+                            Link(destination: URL(string: formatURL(pin.pinContent.link))!, label: {
+                                CardView(receivedPin: pin.pinContent)
+                            })
+                            .accessibilityLabel("Link from Alejandro Oliva to \(pin.pinContent.link)")
+                            .accessibilityHint("Double tap to open it.")
+                            .accessibilityRemoveTraits(.isLink)
+                        } else {
                             Button{
                                 pinToShow = pin.pinContent
                             } label: {
@@ -53,7 +53,7 @@ struct ScrollPinsGrid: View {
                             .accessibilityLabel(pin.pinContent.title != "" ? "Pin from Alejandro Oliva. Title: \(pin.pinContent.title)" : "Pin from Alejandro Oliva.")
                             .accessibilityHint("Double tap to open it.")
                             .accessibilityRemoveTraits(.isButton)
-//                        }
+                        }
                     }
                 }//: LazyVStack
             }//: ForEach

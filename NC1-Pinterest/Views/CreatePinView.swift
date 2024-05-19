@@ -28,6 +28,8 @@ struct CreatePinView: View {
     @State var selectedBoard: Board?
     @Binding var firstSheetOpened: Bool
     let hapticFeedback = UINotificationFeedbackGenerator()
+    @State var searchText = ""
+    @State var selection: String?
     
     var body: some View {
         NavigationStack{
@@ -35,8 +37,8 @@ struct CreatePinView: View {
                 // MARK: - Section to add a new photo
                 Section {
                     if let selectedPhotoData, let uiImage = UIImage(data: selectedPhotoData){
+                        // Photos picker to change the selected photo to create a pin
                         PhotosPicker(selection: $selectedPhoto, matching: .images, photoLibrary: .shared()){
-                            
                             ZStack(alignment: .topTrailing){
                                 Image(uiImage: uiImage)
                                     .resizable()
@@ -52,6 +54,7 @@ struct CreatePinView: View {
                         .accessibilityHint("Double tap to select another photo.")
                         
                     } else {
+                        // Photos picker to select a photo to create a pin
                         PhotosPicker(selection: $selectedPhoto, matching: .images, photoLibrary: .shared()){
                             Image(systemName: "plus.circle.fill")
                                 .padding(.horizontal, 50)
@@ -90,8 +93,6 @@ struct CreatePinView: View {
                 }
                 .padding(.bottom, 40)
                 
-                
-                
                 // MARK: - Description field
                 VStack(alignment: .leading){
                     Text("Description")
@@ -106,8 +107,6 @@ struct CreatePinView: View {
                     // Dynamic text (Accessibility)
                     .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                 }
-                
-                
                 
                 Divider()
                     .padding(.top, 5)
@@ -128,8 +127,6 @@ struct CreatePinView: View {
                     // Dynamic text (Accessibility)
                     .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                 }
-                
-                
                 
                 Divider()
                     .padding(.top, 5)
@@ -158,6 +155,7 @@ struct CreatePinView: View {
                 Button{
                     withAnimation(.easeOut(duration: 0.4)){
                         addItem()
+                        // Add the item and reset the fields
                         newTitle = ""
                         newDesc = ""
                         newLink = ""

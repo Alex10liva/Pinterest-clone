@@ -21,7 +21,6 @@ struct HomeView: View {
     // MARK: - Properties
     @State private var selectedtab: Board = .init(name: "All", pins: [])
     @State private var allSelected: Bool = true
-    
     @State var columnsIconOption: nColumnsOptions = .defaultIcon
     @State var columnSheetIsPresented: Bool = false
     
@@ -31,92 +30,90 @@ struct HomeView: View {
             ZStack(alignment: .bottom){
                 VStack{
                     // MARK: - Custom tab bar
-//                    if(!items.isEmpty){
-                        HStack{
-                            ScrollView(.horizontal){
-                                HStack(){
-                                    // MARK: - Default board
-                                    Text("All")
-                                        .font(.callout)
-                                        .bold()
-                                        .padding(.bottom, 5)
-                                        .background(
-                                            VStack {
-                                                Spacer()
-                                                RoundedRectangle(cornerRadius: 1)
-                                                    .fill(.primary)
-                                                    .frame(height: 3)
-                                                    .opacity(allSelected ? 1 : 0)
-                                            }
-                                        )
-                                        .padding(.horizontal, 8)
-                                        .padding(.leading, 10)
-                                        .padding(.vertical, 10)
-                                        .onTapGesture {
-                                            withAnimation(.easeOut){
-                                                allSelected = true
-                                            }
+                    HStack{
+                        ScrollView(.horizontal){
+                            HStack(){
+                                // MARK: - Default board
+                                Text("All")
+                                    .font(.callout)
+                                    .bold()
+                                    .padding(.bottom, 5)
+                                    .background(
+                                        VStack {
+                                            Spacer()
+                                            RoundedRectangle(cornerRadius: 1)
+                                                .fill(.primary)
+                                                .frame(height: 3)
+                                                .opacity(allSelected ? 1 : 0)
                                         }
-                                        .accessibilityLabel(allSelected ? "Selected. All" : "All")
-                                        .accessibilityAddTraits(.isButton)
-                                    
-                                    // MARK: - Display the created boards
-                                    ForEach(boards){ board in
-                                        HStack(spacing: 10){
-                                            Text(board.name)
-                                                .font(.callout)
-                                                .bold()
-                                                .padding(.bottom, 5)
-                                                .background(
-                                                    VStack {
-                                                        Spacer()
-                                                        RoundedRectangle(cornerRadius: 1)
-                                                            .fill(.primary)
-                                                            .frame(height: 3)
-                                                            .opacity(!allSelected && selectedtab == board ? 1 : 0)
-                                                    }
-                                                )
-                                                .padding(.horizontal, 8)
-                                                .padding(.vertical, 10)
-                                                .onTapGesture {
-                                                    withAnimation(.easeOut){
-                                                        selectedtab = board
-                                                        allSelected = false
-                                                    }
+                                    )
+                                    .padding(.horizontal, 8)
+                                    .padding(.leading, 10)
+                                    .padding(.vertical, 10)
+                                    .onTapGesture {
+                                        withAnimation(.easeOut){
+                                            allSelected = true
+                                        }
+                                    }
+                                    .accessibilityLabel(allSelected ? "Selected. All" : "All")
+                                    .accessibilityAddTraits(.isButton)
+                                
+                                // MARK: - Display the created boards
+                                ForEach(boards){ board in
+                                    HStack(spacing: 10){
+                                        Text(board.name)
+                                            .font(.callout)
+                                            .bold()
+                                            .padding(.bottom, 5)
+                                            .background(
+                                                VStack {
+                                                    Spacer()
+                                                    RoundedRectangle(cornerRadius: 1)
+                                                        .fill(.primary)
+                                                        .frame(height: 3)
+                                                        .opacity(!allSelected && selectedtab == board ? 1 : 0)
                                                 }
-                                                .accessibilityLabel(selectedtab == board ? "Selected. \(board.name)" : "\(board.name)")
-                                                .accessibilityAddTraits(.isButton)
-                                        }
-                                        
+                                            )
+                                            .padding(.horizontal, 8)
+                                            .padding(.vertical, 10)
+                                            .onTapGesture {
+                                                withAnimation(.easeOut){
+                                                    selectedtab = board
+                                                    allSelected = false
+                                                }
+                                            }
+                                            .accessibilityLabel(selectedtab == board ? "Selected. \(board.name)" : "\(board.name)")
+                                            .accessibilityAddTraits(.isButton)
                                     }
-                                    Spacer()
+                                    
                                 }
+                                Spacer()
                             }
-                            // MARK: - Layout button
-                            Button{
-                                columnSheetIsPresented.toggle()
-                            } label: {
-                                Image(getImage(columnOption: columnsIconOption))
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 20)
-                            }
-                            .padding(.horizontal)
-                            .sheet(isPresented: $columnSheetIsPresented){
-                                NumberColumnsView(columnsIconOption: $columnsIconOption)
-                                    .presentationDetents([.fraction(0.35)])
-                                    .onDisappear(){
-                                        UserDefaults.standard.set(columnsIconOption.rawValue, forKey: "nColumnsOption")
-                                    }
-                            }
-                            .accessibilityLabel("Display options.")
-                            .accessibilityAddTraits(.isButton)
-                            .accessibilityHint("Double tap to change the layout of the grid.")
                         }
-//                    }
+                        // MARK: - Layout button
+                        Button{
+                            columnSheetIsPresented.toggle()
+                        } label: {
+                            Image(getImage(columnOption: columnsIconOption))
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 20)
+                        }
+                        .padding(.horizontal)
+                        .sheet(isPresented: $columnSheetIsPresented){
+                            // Show the sheet to change the layout of the pins
+                            NumberColumnsView(columnsIconOption: $columnsIconOption)
+                                .presentationDetents([.fraction(0.35)])
+                                .onDisappear(){
+                                    UserDefaults.standard.set(columnsIconOption.rawValue, forKey: "nColumnsOption")
+                                }
+                        }
+                        .accessibilityLabel("Display options.")
+                        .accessibilityAddTraits(.isButton)
+                        .accessibilityHint("Double tap to change the layout of the grid.")
+                    }
                     // MARK: - Scroll view grid (Pinterest style)
                     ScrollView{
-                        
                         // If the all tab is selected display all the pins
                         if allSelected {
                             ScrollPinsGrid(pins: items, nColumns: getNColumns(columnOption: columnsIconOption))
@@ -133,6 +130,7 @@ struct HomeView: View {
                 }
             }
             .overlay{
+                // If there are no pins show a message so the user knows what to do
                 if items.isEmpty {
                     ContentUnavailableView(label: {
                         Label("No pins added", systemImage: "pin")
@@ -188,6 +186,7 @@ struct HomeView: View {
         }
     }
     
+    // Function to get the string of the columns options
     func getString(columnOption: nColumnsOptions) -> String {
         switch columnOption {
         case .compactIcon:
