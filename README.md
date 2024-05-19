@@ -14,6 +14,6 @@ Welcome to the **Pinterest Clone** app, a project designed to mimic the core fun
 - **Swift Data**: Manage and persist user data, ensuring that pins and boards are stored locally within the app.
 
 ## 🔮 Future Improvements
-- **Enhanced Functionality:**: Expand the functionalities to include features such as user profiles, notifications, and a search function.
+- **Enhanced Functionality**: Expand the functionalities to include features such as user profiles, notifications, and a search function.
 - **Backend Integration**: Integrate a backend service to support user authentication, storage of pins and boards.
 - **User Interaction**: Implement features that allow users to like, comment, and share pins, as well as follow other users' boards.
