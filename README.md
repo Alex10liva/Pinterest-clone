@@ -5,7 +5,7 @@ Welcome to the **Pinterest Clone** app, a project designed to mimic the core fun
 ## 🚀 **Features**
 
 - **🏠 Home Screen**: Displays pins and boards, providing users all their collections.
-- **📌 Pin Creation**: Users can create new pins, adding an image, descriptions a link to a website and added to a created board.
+- **📌 Pin Creation**: Users can create new pins, add an image, description, a link to a website, and add them to a created board.
 - **📋 Board Creation**: Users can create new boards to organize their pins by category or theme.
 
 ## 💻 **Technologies Used**
